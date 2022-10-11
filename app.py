@@ -30,7 +30,7 @@ def load__model():
     print('[INFO] : Model and preprocessed Glove data loaded')
 
 
-def predict(my_tweet):
+def predict(text):
     # Prediction:
     v_size = 100
     tokenizer = Tokenizer()
