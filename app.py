@@ -65,16 +65,17 @@ def sentiment_tweet():
     my_tweet = request.args.get("my_tweet")
     if not my_tweet:
         my_tweet = ''
-        pos = 0.50
-        neg = 0.50
+        sentiment = 'Positive'
+        y_test_pred_proba = 0.50
     else:
         class_pos_neg, y_test_pred_proba = predict(my_tweet)
 
 
-    if class_pos_neg==0:
-        sentiment="Negative"
-    else:
-        sentiment="Positive"
+        if class_pos_neg==0:
+            sentiment="Negative"
+        else:
+            sentiment="Positive"
+
     dictionnaire = {
         'sentiment': sentiment,
         'prob': str(y_test_pred_proba),
