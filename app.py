@@ -1,5 +1,6 @@
 ###to run the Flask server
 # FLASK_APP=Bartcus_Marius_API_092022.py flask run
+# https://sentimentanalyseapi.herokuapp.com/api/?my_tweet=I+love+you
 ###
 import os
 from flask import Flask, request, render_template, jsonify
@@ -73,13 +74,18 @@ def sentiment_tweet():
 
         if class_pos_neg==0:
             sentiment="Negative"
+
+            dictionnaire = {
+                'sentiment': sentiment,
+                'prob': str(1-y_test_pred_proba),
+            }
         else:
             sentiment="Positive"
 
-    dictionnaire = {
-        'sentiment': sentiment,
-        'prob': str(y_test_pred_proba),
-    }
+            dictionnaire = {
+                'sentiment': sentiment,
+                'prob': str(y_test_pred_proba),
+            }
 
     return jsonify(dictionnaire)
 
