@@ -68,6 +68,10 @@ def sentiment_tweet():
         my_tweet = ''
         sentiment = 'Positive'
         y_test_pred_proba = 0.50
+        dictionnaire = {
+            'sentiment': sentiment,
+            'prob': str(y_test_pred_proba),
+        }
     else:
         class_pos_neg, y_test_pred_proba = predict(my_tweet)
 
