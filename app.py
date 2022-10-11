@@ -1,6 +1,7 @@
 ###to run the Flask server
 # FLASK_APP=Bartcus_Marius_API_092022.py flask run
-# https://sentimentanalyseapi.herokuapp.com/api/?my_tweet=I+love+you
+# https://sentimentanalyseapi.herokuapp.com/api?my_tweet=I+hate+you
+# http://127.0.0.1:5000/api?my_tweet=I+hate+you
 ###
 import os
 from flask import Flask, request, render_template, jsonify
@@ -19,7 +20,6 @@ def load__model():
     Load model
     :return: model (global variable)
     """
-    print('[INFO] Model Loading ........')
     results_data_path = os.path.join("results")
     model_name = "lstm_glove_embedded"
     model_file_path = os.path.join(results_data_path, model_name)
@@ -27,8 +27,6 @@ def load__model():
     global model, data
     model = load_model(model_file_path)
     data = pd.read_pickle("processed_nlp_data.pkl.gz")
-
-    print('[INFO] : Model and preprocessed Glove data loaded')
 
 
 def predict(text):
@@ -54,7 +52,7 @@ def predict(text):
     return class_pos_neg[0], y_test_pred_proba[0,0]
 
 # API
-@app.route("/api/")
+@app.route("/api")
 def sentiment_tweet():
     #dictionnaire = {
     #        'type': 'Prévision de température',
@@ -63,7 +61,7 @@ def sentiment_tweet():
     #}
     #return jsonify(dictionnaire)
 
-    my_tweet = request.args.get("my_tweet")
+    my_tweet = [request.args.get("my_tweet")]
     if not my_tweet:
         my_tweet = ''
         sentiment = 'Positive'
@@ -74,8 +72,6 @@ def sentiment_tweet():
         }
     else:
         class_pos_neg, y_test_pred_proba = predict(my_tweet)
-
-
         if class_pos_neg==0:
             sentiment="Negative"
 
@@ -95,7 +91,7 @@ def sentiment_tweet():
 
 
 # API TEST
-@app.route("/test/")
+@app.route("/test")
 def test_api():
     dictionnaire = {
         'type': 'Prévision de température',
